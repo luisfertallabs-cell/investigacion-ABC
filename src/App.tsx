@@ -18,10 +18,11 @@ import Team from './pages/Team'
 import Setup from './pages/Setup'
 
 export default function App() {
-  const { session, profile, loading, recovering, isCoordinator } = useAuth()
+  const { session, profile, loading, dbReady, recovering, isCoordinator } = useAuth()
   const location = useLocation()
 
   if (!isConfigured) return <Setup />
+  if (!dbReady) return <Setup database />
   if (loading) return <div className="splash"><img src="./favicon.png" alt="" /></div>
   if (recovering) return <UpdatePassword />
 

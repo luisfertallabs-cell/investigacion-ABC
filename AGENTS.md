@@ -150,7 +150,9 @@ Nunca usar la `service_role` key en el frontend.
 1. `deploy.yml`: en push a `main` o manual. `npm ci`, `npm run build` con los secrets, publica `dist` en Pages. Requiere Settings, Pages, Source: **GitHub Actions**.
 2. `supabase-migrations.yml`: solo manual; `supabase link` y `supabase db push`.
 
-Si faltan los secrets, el sitio muestra la pantalla `Setup`.
+Si faltan los secrets, el sitio muestra la pantalla `Setup` y escribe una advertencia en consola sin hacer peticiones. Si los secrets existen pero las migraciones no, muestra "Base de datos pendiente" y también advierte en consola (`warnSetup` en `src/lib/supabase.ts`).
+
+No agregar el workflow de ejemplo de Jekyll que GitHub sugiere al activar Pages: publica el código fuente sin compilar (error 404 en `main.tsx`) y compite con `deploy.yml`.
 
 ### Supabase Auth
 
