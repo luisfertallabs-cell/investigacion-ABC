@@ -61,7 +61,7 @@ src/pages/                     Login, Register, Recover, UpdatePassword, Onboard
                                Dashboard, Projects, ProjectDetail, ProjectEditor, Tasks,
                                Congresses, Profile, Team
 supabase/migrations/           esquema, RLS y catálogos
-.github/workflows/             deploy.yml (Pages) y supabase-migrations.yml (manual)
+.github/workflows/             deploy.yml (Pages)
 ```
 
 ## 5. Flujo de usuario
@@ -129,28 +129,28 @@ Las políticas se probaron en Postgres 16 con un esquema `auth` simulado: escala
 
 ### Agregar una migración
 
-Crear `supabase/migrations/AAAAMMDDHHMMSS_descripcion.sql`, con RLS para toda tabla nueva, y ejecutar el workflow "Supabase migraciones" o `supabase db push`.
+Crear `supabase/migrations/AAAAMMDDHHMMSS_descripcion.sql`, con RLS para toda tabla nueva, y ejecutarlo en el SQL Editor de Supabase. Las migraciones se aplican a mano y en orden; no hay workflow ni secrets para la base de datos.
 
 ## 7. Despliegue
 
-### Secrets de GitHub Actions (Settings, Secrets and variables, Actions)
+### Secrets de GitHub Actions (Settings, Secrets and variables, Actions, Repository secrets)
+
+Solo se necesitan dos:
 
 | Secret | Uso |
 | --- | --- |
 | `SUPABASE_URL` | Build del frontend (`VITE_SUPABASE_URL`) |
 | `SUPABASE_ANON_KEY` | Build del frontend (`VITE_SUPABASE_ANON_KEY`); es pública por diseño, la protección es RLS |
-| `SUPABASE_ACCESS_TOKEN` | Workflow de migraciones (token personal de supabase.com) |
-| `SUPABASE_DB_PASSWORD` | Workflow de migraciones |
-| `SUPABASE_PROJECT_ID` | Workflow de migraciones (referencia del proyecto, ej. `abcdxyz`) |
 
 Nunca usar la `service_role` key en el frontend.
 
-### Workflows
+### Workflow
 
-1. `deploy.yml`: en push a `main` o manual. `npm ci`, `npm run build` con los secrets, publica `dist` en Pages. Requiere Settings, Pages, Source: **GitHub Actions**.
-2. `supabase-migrations.yml`: solo manual; `supabase link` y `supabase db push`.
+`deploy.yml`: en push a `main` o manual. `npm ci`, `npm run build` con los secrets, publica `dist` en Pages. Requiere Settings, Pages, Source: **GitHub Actions**.
 
-Si faltan los secrets, el sitio muestra la pantalla `Setup`.
+Si faltan los secrets, el sitio muestra la pantalla `Setup` y escribe una advertencia en consola sin hacer peticiones. Si los secrets existen pero las migraciones no, muestra "Base de datos pendiente" y también advierte en consola (`warnSetup` en `src/lib/supabase.ts`).
+
+No agregar el workflow de ejemplo de Jekyll que GitHub sugiere al activar Pages: publica el código fuente sin compilar (error 404 en `main.tsx`) y compite con `deploy.yml`.
 
 ### Supabase Auth
 

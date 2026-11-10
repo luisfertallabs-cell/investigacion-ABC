@@ -7,12 +7,9 @@ Contexto completo para agentes y desarrolladores en [AGENTS.md](AGENTS.md).
 ## Puesta en marcha
 
 1. Crear un proyecto en Supabase.
-2. Aplicar las migraciones de `supabase/migrations/` en orden, desde el SQL Editor o con el workflow **Supabase migraciones**.
+2. En el SQL Editor de Supabase, ejecutar en orden los archivos de `supabase/migrations/`.
 3. En Supabase, Authentication, URL Configuration, agregar la URL de GitHub Pages como Site URL y Redirect URL.
-4. En GitHub, Settings, Secrets and variables, Actions, crear:
-   1. `SUPABASE_URL`
-   2. `SUPABASE_ANON_KEY`
-   3. `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `SUPABASE_PROJECT_ID` (solo para migraciones)
+4. En GitHub, Settings, Secrets and variables, Actions, Repository secrets, crear `SUPABASE_URL` y `SUPABASE_ANON_KEY` (Supabase, Project Settings, API).
 5. En GitHub, Settings, Pages, Source: **GitHub Actions**.
 6. Hacer push a `main`.
 7. Registrarse en el sitio y promover al primer coordinador en el SQL Editor:
